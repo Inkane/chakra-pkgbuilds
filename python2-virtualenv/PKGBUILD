@@ -1,0 +1,35 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
+# Contributor: Dan McGee <dan@archlinux.org>
+# Contributor: Daniele Paolella <dp@mcrservice.it>
+
+pkgname='python2-virtualenv'
+pkgver=1.7.1.2
+pkgrel=1
+pkgdesc="Virtual Python Environment builder (Python 2 version)"
+url="http://www.virtualenv.org/"
+arch=('any')
+license=('MIT')
+makedepends=('python2' 'python-distribute')
+replaces=('virtualenv')
+conflicts=('virtualenv')
+source=("http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pkgver.tar.gz")
+md5sums=('3be8a014c27340f48b56465f9109d9fa')
+
+
+package() {
+
+  cd "$srcdir/virtualenv-$pkgver"
+  python2 setup.py build
+  python2 setup.py install --prefix=/usr --root="$pkgdir"
+
+  # move this "old" version out of the way
+  mv "$pkgdir/usr/bin/virtualenv" "$pkgdir/usr/bin/virtualenv2"
+
+  # should report this upstream as still not fixed...
+  sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" \
+    $pkgdir/usr/lib/python2.7/site-packages/virtualenv.py
+ 
+  install -D -m644 LICENSE.txt \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+

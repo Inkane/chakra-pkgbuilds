@@ -1,0 +1,40 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: Igor Nemilentsev <trezorg dog gmail dot com>
+
+pkgname=python2-pyffmpeg
+pkgver=2.1
+pkgrel=1
+pkgdesc="PyFFmpeg is a wrapper around libavcodec, libavformat and libavutil FFmpeg libraries"
+arch=('i686' 'x86_64')
+url="http://code.google.com/p/pyffmpeg/"
+license=('LGPL')
+depends=('ffmpeg' 'python2' 'python-numpy')
+makedepends=('cython')
+# We use the beta version because it's supposed to work better
+source=("http://pyffmpeg.googlecode.com/files/pyffmpeg-${pkgver}beta.tar.gz" 
+        "pyffmpeg.patch" "setup.patch" "pyffmpeg_2.patch")
+install=${pkgname}.install
+md5sums=('0a8900d596b87f3d36e2fe1c9b1c9c2a'
+         '996884bb98ea4dbbc92db9f763b2cd57'
+         'd318b70725ffbb0d84a7f5bf71678acb'
+         'cd624decc8b73618ea7ea691cc965f88')
+
+build() {
+  cd "$srcdir/${pkgname/*-}-${pkgver}beta"
+  # patch for cython compatibility
+  patch -uN pyffmpeg.pyx $srcdir/pyffmpeg.patch
+  # patch to find the right libraries
+  patch -uN setup.py $srcdir/setup.patch
+  # patching is to cumbersome at the moment, replacing all occurences with sed
+  msg "using sed"
+  sed -i "s/CODEC_TYPE_VIDEO/AVMEDIA_TYPE_VIDEO/g" pyffmpeg.pyx
+  sed -i "s/CODEC_TYPE_AUDIO/AVMEDIA_TYPE_AUDIO/g" pyffmpeg.pyx
+  # patch which fixes stuff no longer supported by ffmpeg
+  patch -uN pyffmpeg.pyx $srcdir/pyffmpeg_2.patch
+  python2 setup.py build || return 1
+}
+
+package() {
+  cd "$srcdir/${pkgname/*-}-${pkgver}beta"
+  python2 setup.py install --prefix=/usr --root="$pkgdir" || return 1
+}

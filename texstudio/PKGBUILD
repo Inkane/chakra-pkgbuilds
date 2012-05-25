@@ -1,0 +1,28 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: Clément DEMOULINS <clement@archivel.fr>
+
+pkgname=texstudio
+pkgver=2.3
+pkgrel=2
+pkgdesc="Fork of the LaTeX IDE TexMaker. Gives you an environment where you can easily create and manage LaTeX documents."
+arch=('i686' 'x86_64')
+url="http://texstudio.sourceforge.net/"
+screenshot="http://sourceforge.net/projects/texstudio/screenshots/299651/182/137"
+license=('GPL')
+depends=('poppler-qt')
+optdepends=('texlive-bin')
+replaces=('texmakerx')
+
+source=(http://downloads.sourceforge.net/project/texstudio/texstudio/TeXstudio%20${pkgver}/${pkgname}-${pkgver}.tar.gz)
+md5sums=('32cde0fe8398ec9b1d434c7ab6f70782')
+
+build() {
+    cd $srcdir/${pkgname}${pkgver}
+    qmake texstudio.pro
+    make 
+}
+
+package() {
+    cd $srcdir/${pkgname}${pkgver}
+    make INSTALL_ROOT="$pkgdir/" install
+}

@@ -1,0 +1,11 @@
+--- src/eclim_1.7.3/doc/extension/eclim/sphinx/builder.py	2012-01-31 16:39:36.000000000 +0100
++++ builder.py	2012-04-15 19:39:28.924649513 +0200
+@@ -125,7 +125,7 @@
+ # EV: end main toc
+ 
+     # local TOC and global TOC tree
+-    self_toc = self.env.get_toc_for(docname, self)
++    self_toc = self.env.get_toc_for(docname)
+     toc = self.render_partial(self_toc)['fragment']
+ 
+     return dict(

@@ -1,0 +1,28 @@
+--- /tmp/tmp.KmBf092FIn/pyffmpeg-2.1beta/pyffmpeg.pyx	2011-01-12 16:49:19.000000000 +0100
++++ src/pyffmpeg-2.1beta/new.pyx	2012-03-19 01:09:55.162841309 +0100
+@@ -703,6 +703,7 @@
+ 
+ 
+ def py_av_register_all():
++    global __registered
+     if __registered:
+         return
+     __registered = 1
+@@ -805,7 +806,7 @@
+  #   self.prepacket=<AVPacket *>None
+ #   self.packet=&self.packetbufa
+ 
+-    def __new__(self):
++    def __cinit__(self):
+         pass
+ 
+     def dump(self):
+@@ -1832,7 +1833,7 @@
+     cdef int with_readahead
+     cdef unsigned long long int seek_before_security_interval
+ 
+-    def __new__(self,with_readahead=True,seek_before=4000):
++    def __cinit__(self,with_readahead=True,seek_before=4000):
+         self.filename = None
+         self.tracks=[]
+         self.ctracks=NULL

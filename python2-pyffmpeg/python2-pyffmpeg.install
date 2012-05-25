@@ -1,0 +1,10 @@
+post_install() {
+	echo "  >>upstream has problems following the pace of ffmpeg"
+	echo "  >>Consider this package as deprecated"
+}
+
+post_upgrade() {
+	post_install
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,75 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: aur2ccr (http://ddg.gg/?q=!ccr+aur2ccr)
+# Contributor: Andrea Fagiani <andfagiani_at_gmail_dot_com>
+
+pkgname=eclim
+pkgver=1.7.3
+pkgrel=1
+pkgdesc="Brings Eclipse functionality to Vim"
+screenshot="http://sourceforge.net/projects/eclim/screenshots/70820"
+url="http://eclim.org/"
+license=('GPL3')
+arch=(i686 x86_64)
+depends=('vim' 'eclipse' 'python-jinja')
+makedepends=('apache-ant' 'python-sphinx')
+optdepends=('eclipse-pdt: Eclipse PHP Development Tools support'
+            'eclipse-cdt: Eclipse C/C++ Plugin support'
+            'eclipse-dltk-core: Eclipse Dynamic Languagues Toolkit support'
+            'eclipse-dltk-ruby: Eclipse Ruby support'
+            'eclipse-wtp-wst: Eclipse Web Developer Tools support')
+conflicts=('eclim-git')
+install=$pkgname.install
+source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/${pkgname}_$pkgver.tar.gz"
+        "builder.patch")
+md5sums=('fdc8980f591d713b56b10efada719b39'
+         '0d8863b7aee519f8c136744f921f2585')
+
+build() {
+    cd $srcdir/${pkgname}_$pkgver
+    
+    # fix build, thanks to mikezackles
+    sed -e "s/'sphinx-build'/'sphinx-build2'/g" \
+        -e 's|${user.home}/\.|${vim.files}/|g' \
+        -e "s|File(getVariable('eclipse')|File('/usr/share/eclipse/'|g" \
+        -i ant/build.gant
+
+    # Get the ANT_HOME environment variable
+    source /etc/profile.d/apache-ant.sh
+
+    # Build (necessary, we need to build with the correct environment variables
+    mkdir -p $pkgdir/usr/share/eclipse
+    mkdir -p $pkgdir/usr/share/vim/vimfiles
+
+    chmod +x org.eclim/nailgun/configure bin/sphinx
+
+    # recompiling nailgun to make sure the executable is compliant with our architecture
+    cd org.eclim/nailgun
+    ./configure
+    make
+    cd ../..
+
+    ant -Declipse.home=/usr/share/eclipse \
+        -Dvim.files=/usr/share/vim/vimfiles \
+        build
+
+    ant -Declipse.home=$pkgdir/usr/share/eclipse \
+        -Dvim.files=$pkgdir/usr/share/vim/vimfiles \
+        deploy
+
+    ant -Declipse.home=/usr/share/eclipse \
+      -Dvim.files=$pkgdir/usr/share/vim/vimfiles \
+      docs vimdocs
+
+    # copy eclim docs
+    mkdir -p $pkgdir/usr/share/doc/
+    cp -r build/doc/site $pkgdir/usr/share/doc/eclim
+
+    # fix eclim paths
+    sed -e "s|$pkgdir||g" \
+      -i $pkgdir/usr/share/vim/vimfiles/eclim/plugin/eclim.vim \
+      -i $pkgdir/usr/share/eclipse/plugins/org.eclim_$pkgver/bin/eclimd \
+      -i $pkgdir/usr/share/eclipse/plugins/org.eclim_$pkgver/plugin.properties
+
+    # delete Windows stuff
+    for i in $(find $pkgdir -regex ".*bat\|.*cmd\|.*exe"); do  rm -f $i ; done
+}

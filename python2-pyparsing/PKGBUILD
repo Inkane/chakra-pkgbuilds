@@ -3,32 +3,23 @@
 # Contributor: Geoffroy Carrier <geoffroy.carrier@aur.archlinux.org>
 # Contributor: Arvid Ephraim Picciani <aep@exys.org>
 # Contributor: Michael Krauss <hippodriver@gmx.net>
-pkgname=(python-pyparsing)
+pkgname="python2-pyparsing"
 pkgver=1.5.6
 pkgrel=1
 pkgdesc="General parsing module for Python"
 arch=(any)
 url="http://pyparsing.wikispaces.com"
 license=('MIT')
-# remove python3 from makedepends, if you only need it for python2
-makedepends=("python2"  "python3")
+makedepends=("python2")
 depends=("python2")
-optdepends=("python3")
-provides=(pyparsing)
-replaces=(pyparsing)
-conflicts=(pyparsing)
-source=(http://downloads.sourceforge.net/pyparsing/pyparsing-$pkgver.tar.gz)
+provides=("python-pyparsing")
+replaces=("python-pyparsing")
+conflicts=("python-pyparsing")
+source=("http://downloads.sourceforge.net/pyparsing/pyparsing-$pkgver.tar.gz")
 
-build() {
-  true
-}
-
-# ccr doesn't support split pkgbuilds :-(, so we work around it 
 package() {
   cd "$srcdir/pyparsing-$pkgver"
   python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
-  rm -rf build pyparsing.py
-  python3 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/python2-pyparsing/LICENSE"
 }
 

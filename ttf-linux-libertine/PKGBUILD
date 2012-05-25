@@ -1,0 +1,31 @@
+# $Id$
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: Gaetan Bisson <bisson@archlinux.org>
+# Contributor: Firmicus <francois.archlinux.org>
+# Contributor: Lukas Jirkovsky <l.jirkovsky@gmail.com>
+# Contributor: <AttilaH©web.de>
+
+pkgname=ttf-linux-libertine
+pkgver=5.1.3
+_reldate=2011_06_21
+pkgrel=2
+pkgdesc='Serif (Libertine) and Sans Serif (Biolinum) OpenType fonts with large Unicode coverage'
+url="http://linuxlibertine.sourceforge.net/"
+license=('GPL' 'custom:OFL')
+arch=('any')
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+source=("http://downloads.sourceforge.net/project/linuxlibertine/linuxlibertine/${pkgver}-2/LinLibertine"{TTF,OTF}"_${pkgver}_${_reldate}.tgz")
+sha1sums=('c9276e02b31a09999bb782c2a19207e6c86a3062'
+          'aa91a7c079511907dbd59c90917d6b3396a36699')
+
+install=install
+
+build() {
+	cd "${srcdir}"
+	install -dm755 "${pkgdir}"/usr/share/fonts/{OTF,TTF}
+	install -m644 *.ttf "${pkgdir}"/usr/share/fonts/TTF
+	install -m644 *.otf "${pkgdir}"/usr/share/fonts/OTF
+
+	install -Dm644 OFL.txt "${pkgdir}"/usr/share/licenses/"${pkgname}"/LICENSE
+	install -Dm644 LICENCE.txt "${pkgdir}"/usr/share/licenses/"${pkgname}"/README
+}

@@ -1,0 +1,26 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: aur2ccr (http://ddg.gg/?q=!ccr+aur2ccr&t=chakra)
+# Contributor: Nathan Owe <ndowens04+AUR at gmail.com>
+# Contributor: res <andres87p gmail>
+pkgname=autotoolset
+pkgver=0.11.4
+pkgrel=1
+pkgdesc="Set of utilities that help maintain GNU autotool projects"
+url="http://${pkgname}.sourceforge.net/"
+license=('GPL')
+depends=('perl')
+makedepends=('sharutils')
+arch=('i686' 'x86_64')
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('91c66320a12744815e8dd487af518676')
+install=autotoolset.install
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr --infodir=/usr/share/info
+  make
+}
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

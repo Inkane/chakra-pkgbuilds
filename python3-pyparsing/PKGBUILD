@@ -1,0 +1,24 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Maintainer: Chris Brannon <cmbrannon79@gmail.com>
+# Contributor: Geoffroy Carrier <geoffroy.carrier@aur.archlinux.org>
+# Contributor: Arvid Ephraim Picciani <aep@exys.org>
+# Contributor: Michael Krauss <hippodriver@gmx.net>
+pkgname="python3-pyparsing"
+pkgver=1.5.6
+pkgrel=1
+pkgdesc="General parsing module for Python"
+arch=(any)
+url="http://pyparsing.wikispaces.com"
+license=('MIT')
+makedepends=("python3")
+depends=("python3")
+provides=("python3-pyparsing")
+source=("http://downloads.sourceforge.net/pyparsing/pyparsing-$pkgver.tar.gz")
+
+package() {
+  cd "$srcdir/pyparsing-$pkgver"
+  python3 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/python3-pyparsing/LICENSE"
+}
+
+md5sums=('1e41cb219dae9fc353bd4cd47636b283')

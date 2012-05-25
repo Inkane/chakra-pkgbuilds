@@ -1,0 +1,47 @@
+--- setup.py	2011-01-12 16:46:15.000000000 +0100
++++ new.py	2012-03-19 01:38:36.851505985 +0100
+@@ -15,7 +15,7 @@
+ except:
+   with_numpy=False
+   sys.stderr.write("Numpy does not seems to be installed on your system.\n")
+-  sys.stderr.write("You may still use pyffmpeg but audiosupport and numpy-bridge are disabled.\n")  
++  sys.stderr.write("You may still use pyffmpeg but audiosupport and numpy-bridge are disabled.\n")
+ 
+ 
+ 
+@@ -30,7 +30,7 @@
+         except:
+             pass
+     extra_compiler_args=["-static-libgcc"]
+-    
++
+ else:
+     ffmpegpath = '/opt/ffmpeg'
+     for x in [ os.environ["HOME"]+"build/ffmpeg",  '/usr/local/ffmpeg',  '/opt/ffmpeg' ]:
+@@ -38,7 +38,7 @@
+              os.stat(x)
+              ffmpegpath = x
+         except:
+-            pass    
++            pass
+     extra_compiler_args=[]
+ 
+ 
+@@ -71,7 +71,7 @@
+ 
+ 
+ libs = [ 'avformat', 'avcodec', 'avutil', 'swscale' ]
+-incdir = [ path_join(ffmpegpath, 'include'), "/usr/include/ffmpeg" , "./include" ] 
++incdir = [ path_join(ffmpegpath, 'include'), "/usr/include/libavcodec","/usr/include/libavformat","/usr/include/libswscale", "./include" ]
+ 
+ if (with_numpy):
+   incdir = incdir + list(nd.get_numpy_include_dirs())
+@@ -100,7 +100,7 @@
+                      ]
+ else:
+         ext_modules=[ Extension('pyffmpeg', [ 'pyffmpeg.pyx' ],
+-                       include_dirs = incdir, 
++                       include_dirs = incdir,
+                        library_dirs = libinc,
+                        libraries = libs,
+                        extra_compile_args=extra_compiler_args)
