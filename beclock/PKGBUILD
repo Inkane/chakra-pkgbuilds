@@ -1,0 +1,23 @@
+# Maintainer: Inkane
+#Contributor: mcder3 <mcder3[at]gmail[dot]com>
+
+pkgname=beclock
+_pkgname=beclock-kwin-fx
+pkgver=0.18
+pkgrel=1
+pkgdesc="A simple clock, implemented as KWin Effect"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://kde-look.org/content/show.php?content=117542&forumpage=0"
+screenshot="http://i.imgur.com/pkrHT.png"
+depends=('kde-workspace>=4.7.0')
+makedepends=('cmake' 'automoc4' 'gcc' 'make')
+source=("http://kde-look.org/CONTENT/content-files/117542-${_pkgname}-${pkgver}.txz")
+md5sums=('7a2286008e692af62a55b8da4e5629f5')
+
+build(){
+  cd $srcdir/${_pkgname}-${pkgver}
+  cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release .
+  make
+  make DESTDIR=$pkgdir install
+}

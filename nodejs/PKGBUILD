@@ -8,7 +8,7 @@
 # Contributor: TIanyi Cui <tianyicui@gmail.com>
 
 pkgname=nodejs
-pkgver=0.6.16
+pkgver=0.6.18
 pkgrel=1
 pkgdesc='Evented I/O for V8 javascript'
 arch=('i686' 'x86_64')
@@ -19,7 +19,7 @@ checkdepends=('curl') # curl used for check()
 optdepends=('openssl: TLS support')
 options=('!emptydirs')
 source=("http://nodejs.org/dist/v${pkgver}/node-v${pkgver}.tar.gz")
-md5sums=('14396c18be0ca9660cf61ae38bee6fde')
+md5sums=('4a3d3123ccc7b9b21c1990fe074e3d14')
 
 build() {
   cd node-v${pkgver}
