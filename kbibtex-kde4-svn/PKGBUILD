@@ -2,7 +2,7 @@
 # Contributor: Phil Miller
 pkgname=kbibtex-kde4-svn
 pkgrel=1
-pkgver=1270
+pkgver=1271
 pkgdesc="KBibTeX is a BibTeX editor for KDE to edit bibliographies used with LaTeX."
 url="http://home.gna.org/kbibtex/"
 license=('GPL')
@@ -43,7 +43,7 @@ arch=('i686' 'x86_64')
 
       install_prefix=`kde4-config --prefix`
       cmake -DCMAKE_INSTALL_PREFIX="${install_prefix}" \
-      -DCMAKE_BUILD_TYPE=debugfull -DBINARY_POSTFIX=-kde4 ../
+      -DCMAKE_BUILD_TYPE=debugfull  ../
 
       make || return 1
   }
