@@ -1,0 +1,35 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com>
+# Contributor: aur2ccr (http://ddg.gg/?q=!ccr+aur2ccr&t=chakra)
+# Contributor: Rolinh <robinDOThahlingATgw-computingDOTnet>
+pkgname=dfc
+pkgver=3.0.0
+pkgrel=1
+pkgdesc="Display file system space usage using graphs and colors"
+screenshot="https://teom.files.wordpress.com/2012/05/shell3.png"
+arch=('x86_64' 'i686')
+url="http://projects.gw-computing.net/projects/dfc"
+license=('BSD')
+depends=('glibc')
+makedepends=('cmake')
+provides=('dfc')
+conflicts=('dfc-git')
+source=("http://projects.gw-computing.net/attachments/download/63/${pkgname}-${pkgver}.tar.gz")
+install='dfc.install'
+md5sums=('6c64c6b6c3bcf6e82376cbb2bc7bce9d')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  cmake . -DPREFIX=/usr -DSYSCONFDIR=/etc -DCMAKE_BUILD_TYPE=RELEASE
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
