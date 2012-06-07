@@ -1,0 +1,21 @@
+diff -Naur eclipse-orig/eclipse.ini eclipse-patch/eclipse.ini
+--- eclipse-orig/eclipse.ini	2011-11-04 02:06:26.186286524 +0000
++++ eclipse-patch/eclipse.ini	2011-11-04 02:07:12.419273992 +0000
+@@ -1,3 +1,5 @@
++-configuration
++@user.home/.eclipse/org.eclipse.platform
+ -startup
+ plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar
+ --launcher.library
+@@ -5,9 +7,9 @@
+ -showsplash
+ org.eclipse.platform
+ --launcher.XXMaxPermSize
+-256m
++512m
+ --launcher.defaultAction
+ openFile
+ -vmargs
+ -Xms40m
+--Xmx384m
++-Xmx768m
