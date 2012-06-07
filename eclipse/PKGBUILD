@@ -1,54 +1,61 @@
-# Maintainer: Inkane <neoinkaneglade@aol.com>
-# Contributor: renan
-# Contributor: Ionut Biru <ibiru@archlinux.org>
-# Contributor: Paul Mattal <paul@archlinux.org>
-# Contributor: Andrew Wright <andreww@photism.org>
-# Contributor: Andreas W. Hauser <andy-aur@splashground.de>
-# Contributor: Marco Crosio <marco.crosio@gmail.com>
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
+# Contributor : Daniele Cocca <jmc@chakra-project.org>
+# Original CCR Contributor: Renan Biegelmeyer (RenanBS) <renan.biegel[at]gmail[.dot]com>
 
 pkgname=eclipse
 pkgver=3.7.2
-pkgrel=2
+_internal_pkgver=3.7.2
+pkgrel=3
 _date=201202080800
 pkgdesc="An IDE for Java and other languages"
-screenshot="http://files.cyberciti.biz/uploads/faq/2008/10/eclipse-java-project-4.png"
+screenshot="http://www.heise.de/software/screenshots/21662.jpg"
 arch=('i686' 'x86_64')
 url="http://eclipse.org"
-depends=('java-environment' 'gtk2' 'unzip' 'libwebkit')
-install=${pkgname}.install
+depends=('java-environment' 'gtk2' 'unzip' 'xulrunner')
+optdepends=('libwebkit: needed to open links in eclipse')
+# install shouldn't be needed anymore
+#install=${pkgname}.install
 makedepends=('zip')
-conflicts=('xulrunner')
 license=("EPL/1.1")
-source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-$pkgver-${_date}/$pkgname-SDK-$pkgver-linux-gtk.tar.gz"
-	 'eclipse.sh' 'eclipse.desktop' 'eclipse.svg')
-md5sums=('6a0fd32cb6a986032a67defab3753476'
+source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk.tar.gz"
+        'http://www.bearfruit.org/files/eclipse-icon-clean.svg'
+        'eclipse.sh'
+        'eclipse.desktop'
+        'eclipse.ini.patch')
+md5sums=('79b90faa1ee6e7af1910c3a5077b594f'
+         '77cff7543ccf7e177cb6667f5a20ce19'
          '7ea99a30fbaf06ec29261541b8eb1e23'
-         'ba8a37e30a7ebd69774cec87c69e8c44'
-         '77cff7543ccf7e177cb6667f5a20ce19')
-[ "$CARCH" = "x86_64" ] && source[0]="ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-$pkgver-${_date}/$pkgname-SDK-$pkgver-linux-gtk-$CARCH.tar.gz"
-[ "$CARCH" = "x86_64" ] && md5sums[0]='6a0fd32cb6a986032a67defab3753476'
+         '20a9dd7d1c746b422ba43c32832c05a9'
+         '9169aa2912de41bfddca94b759d9ab7a')
+
+[ "${CARCH}" = "x86_64" ] && {
+  source[0]="ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk-${CARCH}.tar.gz"
+  md5sums[0]='6a0fd32cb6a986032a67defab3753476'
+}
 
 package() {
-  cd "$srcdir/eclipse"
+  cd "${srcdir}/eclipse"
+
+  # IMPORTANT: patch to increase default memory limits and respect the home directory of the user
+  patch -Np1 -i "${srcdir}/eclipse.ini.patch"
 
   # install eclipse
-  install -m755 -d "$pkgdir/usr/share"
-  mv "$srcdir/eclipse" "$pkgdir/usr/share/"
+  install -m755 -d "${pkgdir}/usr/share"
+  mv "${srcdir}/eclipse" "${pkgdir}/usr/share/"
 
   # install misc
-  install -d $pkgdir/usr/bin $pkgdir/usr/share/applications \
-    $pkgdir/usr/share/icons/hicolor/{16x16,32x32,48x48}/apps
-  install -m755 "$srcdir/eclipse.sh" "$pkgdir/usr/bin/eclipse"
-  install -m644 "$srcdir/eclipse.desktop" "$pkgdir/usr/share/applications/"
-  ln -s /usr/share/eclipse/plugins/org.eclipse.sdk_$pkgver.v${_date}/eclipse.png \
-    "$pkgdir/usr/share/icons/hicolor/16x16/apps/eclipse.png"
-  ln -s /usr/share/eclipse/plugins/org.eclipse.sdk_$pkgver.v${_date}/eclipse32.png \
-    "$pkgdir/usr/share/icons/hicolor/32x32/apps/eclipse.png"
-  ln -s /usr/share/eclipse/plugins/org.eclipse.sdk_$pkgver.v${_date}/eclipse48.png \
-    "$pkgdir/usr/share/icons/hicolor/48x48/apps/eclipse.png"
+  install -d ${pkgdir}/usr/bin ${pkgdir}/usr/share/applications ${pkgdir}/usr/share/icons/hicolor/{16x16,32x32,48x48}/apps
+
+  install -m755 "${srcdir}/eclipse.sh" "${pkgdir}/usr/bin/eclipse"
+
+  install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/usr/share/applications/"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${_internal_pkgver}.v${_date}/eclipse.png"   "${pkgdir}/usr/share/icons/hicolor/16x16/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${_internal_pkgver}.v${_date}/eclipse32.png" "${pkgdir}/usr/share/icons/hicolor/32x32/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${_internal_pkgver}.v${_date}/eclipse48.png" "${pkgdir}/usr/share/icons/hicolor/48x48/apps/eclipse.png"
 
   # install icon
-  install -Dm644 "$srcdir"/eclipse.svg \
-    "$pkgdir"/usr/share/icons/hicolor/scalable/apps/eclipse.svg
-  sed -i "s|#!/usr/bin/python|#!/usr/bin/python2|" "$pkgdir"/usr/share/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/bin/runant.py
+  install -Dm644 "${srcdir}/eclipse-icon-clean.svg" \
+    "${pkgdir}/usr/share/icons/hicolor/scalable/apps/eclipse.svg"
 }
+
+# vim:set ts=2 sw=2 et:

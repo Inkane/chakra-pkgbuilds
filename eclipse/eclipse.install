@@ -1,5 +1,9 @@
 post_install() {
-  gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor
+  # Prevent a bug, where eclipse hangs without this.
+  # See http://aur.archlinux.org/packages.php?ID=12173
+  xulrunner --register-global >/dev/null 2>&1
+
+  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
 }
 
 post_upgrade() {
@@ -7,5 +11,5 @@ post_upgrade() {
 }
 
 post_remove() {
-  post-install $1
+  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
 }
