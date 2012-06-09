@@ -1,0 +1,28 @@
+# Maintainer: TDY <tdy@gmx.com>
+
+pkgname=xgrabcolor
+pkgver=1.3.5
+pkgrel=1
+pkgdesc="A basic color picker"
+arch=('i686' 'x86_64')
+url="http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=package&package_list=software_list_qt4&package=xgrabcolor&full=1"
+license=('GPL')
+depends=('qt')
+source=(http://www.phenix.bnl.gov/WWW/publish/hpereira/software/tgz/$pkgname-$pkgver.tar.gz
+        liborder.patch)
+md5sums=('e2b7c14e0541ce56ae6065040c6a7eb6'
+         '57769a99e168b6055511c232aed2f04d')
+screenshot="http://www.phenix.bnl.gov/WWW/publish/hpereira/software/screenshot/xgrabcolor.png"
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch  -Np1 -i ../liborder.patch
+  # seems to be needed with gcc 4.7, else it will complain
+  sed -i "s/if( t ) insert( t );/if( t ) this->insert( t );/g" ./base/Key.h
+  # gcc 4.7 patch
+  export LDFLAGS='-lX11'
+  ./autogen.sh --prefix=/usr --with-qt-dir=/usr
+  make || return 1
+  make DESTDIR="$pkgdir" install
+}
+
