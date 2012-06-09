@@ -1,0 +1,18 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
+# Contributor: aur2ccr (http://ddg.gg/?q=!ccr+aur2ccr&t=chakra)
+#Contributor - Akshay Srinivasan <akshaysrinivasan@gmail.com>
+pkgname=python2-pp
+pkgver=1.6.2
+pkgrel=1
+pkgdesc="Parallel and distributed programming for Python"
+arch=("any")
+depends=('python2')
+url="http://www.parallelpython.com"
+license=('BSD-like license')
+source="http://www.parallelpython.com/downloads/pp/pp-$pkgver.tar.gz"
+md5sums=('e3c03ce0b2210c7cfa5d08ce9603bfdb')
+
+build() {
+	cd $srcdir/pp-$pkgver/
+	python2 -O  ./setup.py install --prefix=$pkgdir/usr
+}
