@@ -3,7 +3,7 @@
 # Contributor: Andrea Fagiani <andfagiani_at_gmail_dot_com>
 
 pkgname=eclim
-pkgver=1.7.4
+pkgver=1.7.6
 pkgrel=1
 pkgdesc="Brings Eclipse functionality to Vim"
 screenshot="http://sourceforge.net/projects/eclim/screenshots/70820"
@@ -21,7 +21,7 @@ conflicts=('eclim-git')
 install=$pkgname.install
 source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/${pkgname}_$pkgver.tar.gz"
         "builder.patch")
-md5sums=('f1481923e286b1472d2effb1e3f3568f'
+md5sums=('838b37e285cad257f3a615eed37b9fbf'
          '0d8863b7aee519f8c136744f921f2585')
 
 build() {
