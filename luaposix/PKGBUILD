@@ -1,41 +1,39 @@
 # Maintainer: Inkane <neoinkaneglade@aol.com>
-# Contribut: Sébastien Luttringer <seblu@aur.archlinux.org>
-# Contributer : SpepS <dreamspepser at yahoo dot it>
+# Arch Maintainer: Sébastien Luttringer <seblu@aur.archlinux.org>
+# Contributor: SpepS <dreamspepser at yahoo dot it>
 # Contributor: Laszlo Papp <djszapi at archlinux us>
 # Contributor: Donald Ephraim Curtis <dcurtis@gmail.com>
 
 pkgname=luaposix
-pkgver=5.1.15
+pkgver=5.1.20
 pkgrel=1
-pkgdesc="A POSIX library for Lua"
+pkgdesc='A POSIX library for Lua programming language'
 arch=('i686' 'x86_64')
-url="http://luaforge.net/projects/luaposix/"
-license=('GPL')
+url='http://luaforge.net/projects/luaposix/'
+license=('MIT')
 depends=('lua')
-provides=("lcurses") # merged
-conflicts=("lcurses")
+#checkdepends=('lunit')
 options=('!libtool')
-#source=("http://git.alpinelinux.org/cgit/$pkgname.git/snapshot/$pkgname-$pkgver.tar.bz2")
-#source=("http://luaforge.net/frs/download.php/4813/$pkgname-$pkgver.tar.bz2")
-source=("https://github.com/rrthomas/$pkgname/tarball/v$pkgver")
-md5sums=('af2a1637b61af136056c47d22238423c')
+source=("https://github.com/downloads/rrthomas/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('594d67678f829875e33c86b281441843')
 
 build() {
-  cd "$srcdir/rrthomas"*
-
-  [[ -d build-aux ]] || ./bootstrap
+  cd $pkgname-$pkgver
   ./configure --prefix=/usr \
               --libdir=/usr/lib/lua/5.1 \
-              --datadir=/usr/share/lua/5.1 
+              --datadir=/usr/share/lua/5.1
   make
 }
 
+#check() {
+  #cd $pkgname-$pkgver
+  #make check
+#}
+
 package() {
-  cd "$srcdir/rrthomas"*
-
+  cd $pkgname-$pkgver
   make PREFIX=/usr DESTDIR="$pkgdir/" install
-
   # examples
   install -d "$pkgdir/usr/share/$pkgname/examples"
-  install -Dm644 *.lua "$pkgdir/usr/share/$pkgname/examples"
+  install -D -m 644 *.lua "$pkgdir/usr/share/$pkgname/examples"
 }
