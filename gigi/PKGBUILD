@@ -7,7 +7,7 @@
 # Contributor: Manuel Gaul <inkaine@hotmail.com>
 pkgname=gigi
 pkgver=0.8.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Small, efficient and feature rich GUI for C++ and OpenGL"
 url="http://gigi.sourceforge.net"
 arch=('x86_64' 'i686')
@@ -30,6 +30,16 @@ build() {
   rm -rf gigi-build
   svn export gigi gigi-build
   cd gigi-build
+  
+  # using mostly the same 'patches as arch'
+  msg2 "Patching..."
+  sed -i 's/move_backward(/adobe::move_backward(/g' GG/adobe/vector.hpp
+  # instead of setting it to 999 like arch, we use 7, so that a test for a new
+  # gcc is actually enforced
+  sed -i 's/__GNUC_MINOR__ <= 6/__GNUC_MINOR__ <= 7/g' GG/adobe/cmath.hpp
+  sed -i 's/insert(adobe/this->insert(adobe/g' GG/adobe/closed_hash.hpp
+  # NOTE: this patch is not needed with our current glib 
+  #sed -i 's:TIME_UTC:TIME_UTC_:' src/GUI.cpp
 
   msg2 "Configuring..."
   setconf cmake/GiGiOgre.pc.in prefix /usr

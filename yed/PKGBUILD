@@ -17,7 +17,7 @@ license='http://www.yworks.com/products/yed/license.html'
 depends=('java-runtime')
 source=("http://www.yworks.com/products/yed/demo/yEd-${pkgver}.zip"
         'yed.desktop'
-        'yed.png'
+        'yed.png::http://img.informer.com/icons/png/48/3634/3634980.png'
         'yed')
 md5sums=('f59b9f5aa16e4dc5835d1677d7ec7c5f'
          '02b93a6704bf599210084caf9be081fa'

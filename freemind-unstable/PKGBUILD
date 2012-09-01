@@ -2,7 +2,7 @@
 # Contributor: Archie <Mymaud@gmail.com>
 # Contributor: Andrzej Giniewicz <gginiu@gmail.com>
 pkgname=freemind-unstable
-pkgver=1.0.0.Beta1
+pkgver=1.0.0.Beta5
 pkgrel=1
 pkgdesc="FreeMind is a premier free mind-mapping software written in Java."
 depends=('java-runtime>=6')
@@ -11,13 +11,13 @@ arch=('i686' 'x86_64')
 license=('GPL')
 source=("http://download.sourceforge.net/project/freemind/freemind-unstable/${pkgver/.Beta/_Beta}/freemind-src-${pkgver/.Beta/_Beta_}.tar.gz"
         "freemind-unstable"
-        "freemind-unstable.png"
+        "freemind-unstable.png::http://upload.wikimedia.org/wikipedia/commons/d/d9/Free_Mind.png"
         "freemind-unstable.desktop")
 url="http://freemind.sourceforge.net/wiki/index.php/Main_Page"
 screenshot="http://freemind.sourceforge.net/wiki/images/0/0f/FreeMind-learning-german-080.png"
-md5sums=('cec37d36b597db95fd2fbc190d373fec'
+md5sums=('6ee4644eeb881d6b0fd13b7e8e8e5039'
          '8fbc1af8866a6c2bf83e881a8940f733'
-         '92e7ccb968dbe04e0c5acb3352c4847e'
+         'e9c84c9d788ab83ea8d00dbba24ff4eb'
          '11d249d6c4443a6fab4740b22c140261')
 
 build() {

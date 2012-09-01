@@ -1,0 +1,18 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
+
+pkgname=python2-formic
+pkgver=0.9
+pkgrel=1
+_pkgver=${pkgver}beta4
+pkgdesc="implementation of Apache Ant FileSet and Globs + directory wildcard **"
+arch=('any')
+url="http://code.google.com/p/pythonfutures/"
+license=('GPLv3+')
+depends=('python2')
+source=("http://pypi.python.org/packages/source/f/formic/formic-$_pkgver.tar.gz")
+md5sums=('44085073ec46e8e80383c57d9be9b59d')
+
+package() {
+  cd "$srcdir/formic-$_pkgver"
+  python2 -O setup.py install --root "${pkgdir}" 
+}

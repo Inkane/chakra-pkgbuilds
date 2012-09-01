@@ -1,0 +1,40 @@
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
+# Contributor: Lazy <lazyman.k@gmail.com>
+pkgname=qpdfview
+pkgver=0.3.2
+pkgrel=2
+pkgdesc='A tabbed PDF viewer using the poppler library.'
+screenshot='http://www.hecticgeek.com/wp-content/uploads/2012/04/qpdfview-running-in-Ubuntu.jpg'
+arch=('i686' 'x86_64')
+url='http://launchpad.net/qpdfview'
+license=('GPL3')
+depends=('qt' 'poppler-qt')
+source=("http://launchpad.net/$pkgname/trunk/$pkgver/+download/$pkgname-$pkgver.tar.gz")
+md5sums=('930cc2e4e046610b0d57ea5475fed8ab')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  # setting some options 
+  echo "TARGET_INSTALL_PATH = $pkgdir/usr/bin" >  qpdfview.pri
+  echo "DATA_INSTALL_PATH= $pkgdir/usr/share/qpdfview" >>  qpdfview.pri
+  echo "LAUNCHER_INSTALL_PATH = $pkgdir/usr/share/application" >>  qpdfview.pri
+  echo "MANUAL_INSTALL_PATH = $pkgdir/usr/share/man/man8/" >>  qpdfview.pri
+  echo 'DEFINES += DATA_INSTALL_PATH=\\\"$${DATA_INSTALL_PATH}\\\"' >> qpdfview.pri
+  echo 'system(sed \"s/DATA_INSTALL_PATH/$$replace(DATA_INSTALL_PATH, "/", "\\/")/\"miscellaneous/qpdfview.desktop.in > miscellaneous/qpdfview.desktop))'
+  # change those to your liking
+  # enabled
+  echo "CONFIG += render_in_paint" >> qpdfview.pri
+  # disabled
+  echo "# CONFIG += render_from_dis" >> qpdfview.pri
+
+  msg 'Building program...'
+
+  qmake
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="${pkgdir}" install
+}

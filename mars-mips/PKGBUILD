@@ -10,10 +10,14 @@ arch=('i686' 'x86_64')
 url="http://courses.missouristate.edu/KenVollmar/MARS/index.htm"
 license=('MIT')
 depends=('java-runtime')
-source=(http://courses.missouristate.edu/KenVollmar/MARS/MARS_4_2_Aug_2011/Mars_4_2.jar
-mars-mips
-mars.png
-mars.desktop)
+source=("http://courses.missouristate.edu/KenVollmar/MARS/MARS_4_2_Aug_2011/Mars_4_2.jar"
+"mars-mips"
+"mars.png::http://courses.missouristate.edu/kenvollmar/mars/Mars%20140.jpg"
+"mars.desktop")
+md5sums=('c655b765248302d098ef86dc536cda78'
+         '4dc5805390d14442ae1d139e4944a42f'
+         '8fe84a77ba65aaff7d0f23240f3b1302'
+         '83281c7998223ff073bb31efd473275c')
 
 
 build() {
@@ -28,7 +32,3 @@ build() {
 
 }
 
-md5sums=('c655b765248302d098ef86dc536cda78'
-         '4dc5805390d14442ae1d139e4944a42f'
-         '6a74c887b0166d4adb5b06c64d6a444b'
-         '83281c7998223ff073bb31efd473275c')

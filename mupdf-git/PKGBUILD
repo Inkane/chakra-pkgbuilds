@@ -3,19 +3,18 @@
 # Contributer: Army <uli armbruster who uses the google mail service>
 
 pkgname=mupdf-git
-pkgver=20120330
+pkgver=20120712
 pkgrel=1
 pkgdesc="lightweight PDF viewer and toolkit written in portable C"
 screenshot="http://free4w.com/wp-content/uploads/2009/09/mupdf_1.jpg"
 arch=('i686' 'x86_64')
 url="http://mupdf.com"
 license=("GPL3")
-depends=('libxext' 'desktop-file-utils')
+depends=('libxext' 'desktop-file-utils' 'freetype2' 'jbig2dec' 'libjpeg-turbo'
+         'openjpeg' 'zlib')
 makedepends=('git')
 provides=('mupdf')
 conflicts=('mupdf')
-source=("http://www.mupdf.com/download/mupdf-thirdparty.zip")
-md5sums=('d30f1ecfd812aedcfa9305f621d3cb51')
 install=mupdf-git.install
 
 _gitroot="git://git.ghostscript.com/mupdf.git"
@@ -29,15 +28,14 @@ build() {
                 cd ${_gitname} && git pull
                 msg "The local files are updated."
         else
-                git clone ${_gitroot} ${_gitname}
+                git clone --depth=1 ${_gitroot} ${_gitname}
         fi
         msg "GIT checkout done or server timeout"
 
         rm -rf "${srcdir}/${_gitname}-build"
+	# lazy patch for our old version of openjpeg
+	sed --in-place '53d; 54d'  ${srcdir}/mupdf/fitz/image_jpx.c
         cp -a "${srcdir}/${_gitname}" "${srcdir}/${_gitname}-build"
-
-        # Copy required 3rd party libraries into build directory
-        cp -a "${srcdir}/thirdparty" "${srcdir}/${_gitname}-build/"
 }
 
 package() {

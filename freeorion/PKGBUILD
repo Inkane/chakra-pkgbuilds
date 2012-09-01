@@ -8,7 +8,7 @@
 pkgname=freeorion
 pkgver=0.4
 _fixedrevision=4635
-pkgrel=1
+pkgrel=2
 pkgdesc="Turn-based galactic conquest game inspired by Master of Orion"
 screenshot="http://www.freeorion.org/images/thumb/1/1d/FreeOrion_v0.3.16_Galaxy_Map.png/800px-FreeOrion_v0.3.16_Galaxy_Map.png"
 arch=('x86_64' 'i686')
